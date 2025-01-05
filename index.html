@@ -194,9 +194,6 @@
     async function loadMarkdownFiles() {
       const loadingIcon = document.getElementById('loadingIcon');
   
-      // Mostrar ícono de carga
-      loadingIcon.style.display = 'block';
-  
       try {
         // Definir el template y el ejercicio a buscar
         const templateName = "spring_boot"; // Cambia por el nombre del template
@@ -234,7 +231,7 @@
       } finally {
         // Ocultar el ícono de carga
        if (loadingIcon) {
-            loadingIcon.style.display = 'none'; // Ocultar
+            // loadingIcon.style.display = 'none'; // Ocultar
             // o si deseas eliminarlo del DOM:
             // loadingIcon.remove();
         }
