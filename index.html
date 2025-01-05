@@ -230,7 +230,7 @@
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
-      const code = editor.getValue().trim(); // Código actual del editor
+      // const code = editor.getValue().trim(); // Código actual del editor
       //const code = editor.getValue().trim().replace(/\r\n/g, '\n'); // Normaliza saltos de línea
       const code = btoa(editor.getValue().trim().replace(/\r\n/g, '\n')); // Codifica el código en Base64
       const templateName = "spring_boot"; // Nombre del template
