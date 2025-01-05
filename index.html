@@ -233,7 +233,11 @@
         alert('Hubo un error al obtener los archivos Markdown.');
       } finally {
         // Ocultar el ícono de carga
-        loadingIcon.style.display = 'none';
+       if (loadingIcon) {
+            loadingIcon.style.display = 'none'; // Ocultar
+            // o si deseas eliminarlo del DOM:
+            // loadingIcon.remove();
+        }
       }
     }
   
