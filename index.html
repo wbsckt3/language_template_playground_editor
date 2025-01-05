@@ -230,49 +230,53 @@
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
-      const code = editor.getValue().trim();
-      const fileName = "UserCode.java"
+      const code = editor.getValue().trim(); // Código actual del editor
+      const templateName = "spring_boot"; // Nombre del template
+      const exerciseNumber = "exercise1"; // Número del ejercicio
       const saveButton = document.getElementById('save-button');
       const loadingIcon = document.getElementById('loadingIcon');
-  
+    
       if (!code) {
         alert('El código está vacío. Escribe algo antes de guardar.');
         return;
       }
-  
+    
       // Deshabilitar el botón y mostrar el ícono de carga
       saveButton.disabled = true;
       loadingIcon.style.display = 'block';
-  
+    
       try {
-        // Enviar el código al servidor
-        const response = await fetch('https://www.refactorii.com/save-code', {
+        // Enviar los datos al back-end para realizar la actualización en GitHub
+        const response = await fetch('https://www.refactorii.com//update-markdown-files', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ code, fileName }),
+          body: JSON.stringify({
+            templateName,    // Nombre del template
+            exerciseNumber,  // Número del ejercicio
+            code,            // Código modificado
+          }),
         });
-  
+    
         const data = await response.json();
-  
+    
         if (data.success) {
-          // Reiniciar el progreso del flujo y monitorear su finalización
-          await resetWorkflowProgress();
-          await monitorProgressCompletion();
+          alert('El código se ha guardado correctamente en el repositorio.');
         } else {
-          alert('Hubo un error al guardar el código');
+          alert('Hubo un error al guardar el código.');
         }
       } catch (error) {
-        console.error('Error al enviar el código:', error);
-        alert('Hubo un error al enviar el código');
+        console.error('Error al guardar el código:', error);
+        alert('Hubo un error al guardar el código.');
       } finally {
-        // Siempre rehabilitar el botón y ocultar el ícono de carga después de completar todo
+        // Rehabilitar el botón y ocultar el ícono de carga
         saveButton.disabled = false;
         loadingIcon.style.display = 'none';
       }
     });
-  
+
+   /*
     async function monitorProgressCompletion() {
       const progressBar = document.getElementById('progressBar');
       const interval = 1000; // Verificar cada segundo
@@ -395,10 +399,10 @@
     } catch (err) {
       console.error('Error al obtener el progreso:', err);
     }
-  }
+  } 
 
   setInterval(fetchProgressFromAPI, 3000);
-  fetchProgressFromAPI();
+  fetchProgressFromAPI(); */
 
   </script>
 
