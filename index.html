@@ -221,9 +221,9 @@
         const data = await response.json();
   
         if (data.success && data.files && data.files.length > 0) {
-          // Concatenar contenido de los archivos Markdown
-          const markdownContent = data.files.map(file => file.content).join('\n\n');
-          editor.setValue(markdownContent);
+          // Concatenar contenido de los archivos
+          const combinedContent = data.files.map(file => `// ${file.name}\n${file.content}`).join('\n\n');
+          editor.setValue(combinedContent);
         } else {
           alert('No se encontraron archivos Markdown o hubo un problema con la respuesta.');
           console.log('Respuesta del servidor:', data);
