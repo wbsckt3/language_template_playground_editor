@@ -230,9 +230,10 @@
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
-      // const code = editor.getValue().trim(); // Código actual del editor
+      const code = editor.getValue().trim(); // Código actual del editor
       //const code = editor.getValue().trim().replace(/\r\n/g, '\n'); // Normaliza saltos de línea
-      const code = btoa(editor.getValue().trim().replace(/\r\n/g, '\n')); // Codifica el código en Base64
+      //const code = btoa(editor.getValue().trim().replace(/\r\n/g, '\n')); // Codifica el código en Base64
+      const codeBase64 = btoa(code);
       const templateName = "spring_boot"; // Nombre del template
       const exerciseNumber = "exercise1"; // Número del ejercicio
       const saveButton = document.getElementById('save-button');
@@ -255,9 +256,9 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            templateName,    // Nombre del template
-            exerciseNumber,  // Número del ejercicio
-            code,            // Código modificado
+             code: codeBase64,         // Código en Base64
+             templateName: templateName, // Nombre del template
+             exerciseNumber: exerciseNumber, // Número del ejercicio
           }),
         });
     
