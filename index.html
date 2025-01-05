@@ -168,18 +168,7 @@
  <script>
 
   // (1) codemirror editor initial code
-  const initialJavaCode = `package com.example.demo;
-
-    public class UserCode {
-  
-        public static void main(String[] args) {
-            System.out.println("Hello, fff!");
-        }
-  
-        public String someMethod() {
-            throw new UnsupportedOperationException("Debes implementar this method.");
-        }
-    };`
+  const initialJavaCode = `código Java`
   
     const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
       mode: "text/x-java",
@@ -348,7 +337,7 @@
   
         // Si el progreso es menor al 100%, mostrar el ícono de carga
         if (percentage < 100) {
-          if (loadingIcon) {
+          if (loadingIcon && percentage === 100) {
             loadingIcon.style.display = 'inline-block'; // Asegura que el ícono esté visible y al lado del botón
           }
   
