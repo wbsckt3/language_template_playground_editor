@@ -266,6 +266,7 @@
     
         if (data.success) {
           alert('El código se ha guardado correctamente en el repositorio.');
+          startFetching(); // Iniciar el proceso de consulta
         } else {
           alert('Hubo un error al guardar el código.');
         }
@@ -279,8 +280,30 @@
       }
     });
 
+    let intervalId = null; // Almacenar el ID del intervalo
+    let isFetching = false; // Bandera para controlar si las consultas están activas
+    
+    // Función para iniciar el proceso de consulta
+    function startFetching() {
+      if (isFetching) return; // Evitar múltiples inicios
+      isFetching = true;
+      console.log('Consultas iniciadas...');
+      
+      intervalId = setInterval(fetchTestMessages, 10000); // Cada 10 segundos
+    }
+    
+    // Función para detener el proceso de consulta
+    function stopFetching() {
+      if (intervalId) {
+        clearInterval(intervalId); // Detener el intervalo
+        intervalId = null;
+        isFetching = false;
+        console.log('Consultas detenidas.');
+      }
+    }
+    
     // (4) Obtener el mensaje de respuesta de los test
-   async function fetchTestMessages() {
+    async function fetchTestMessages() {
       try {
         const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
           method: 'POST', // Cambiado a POST
@@ -296,15 +319,18 @@
         console.log('Mensaje del test recibido:', data);
     
         // Actualizar la UI con los datos
-        // Por ejemplo:
         document.getElementById('testResults').innerText = JSON.stringify(data, null, 2);
+    
+        // Detener las consultas si los datos cumplen una condición
+        if (data) { // Reemplaza `someCondition` con tu lógica
+          stopFetching(); // Detener las consultas
+        }
       } catch (error) {
         console.error('Error al obtener TestMsg:', error);
       }
     }
-  
-    // Llamada periódica para obtener los datos
-    setInterval(fetchTestMessages, 5000); // Cada 5 segundos
+
+    
   </script>
 
 </body>
