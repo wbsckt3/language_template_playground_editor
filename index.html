@@ -309,13 +309,22 @@
     
         const data = await response.json(); // Analizar la respuesta como JSON
         console.log('Mensaje del test recibido:', data);
+        // Procesar el mensaje
+        const messages = data.messages; // El string recibido
+        const lines = messages.split('\n'); // Dividir en líneas
+    
+        // Buscar si alguna línea contiene `Status: completed`
+        const hasCompletedStatus = lines.some(line => line.includes('Status: completed'));
+    
+        console.log('Mensaje recibido:', data);
     
         // Actualizar la UI con los datos
-        document.getElementById('testResults').innerText = JSON.stringify(data, null, 2);
+        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
     
-        // Detener las consultas si los datos cumplen una condición
-        if (data) { // Reemplaza `someCondition` con tu lógica
-          stopFetching(); // Detener las consultas
+        // Detener las consultas si el estado es "completed"
+        if (hasCompletedStatus) {
+          console.log('Estado "completed" encontrado. Deteniendo consultas.');
+          stopFetching();
         }
       } catch (error) {
         console.error('Error al obtener TestMsg:', error);
