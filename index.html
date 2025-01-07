@@ -219,6 +219,8 @@
   
     // Ejecutar la función al cargar la página
     window.onload = loadMarkdownFiles;
+
+    const user = "jaalza@gmail.com";
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
@@ -228,7 +230,6 @@
       const codeBase64 = btoa(code);
       const templateName = "spring_boot"; // Nombre del template
       const exerciseNumber = "exercise1"; // Número del ejercicio
-      const user = "jaalza@gmail.com";
       const saveButton = document.getElementById('save-button');
       const loadingIcon = document.getElementById('loadingIcon');
     
@@ -303,6 +304,7 @@
           method: 'POST', // Cambiado a POST
           headers: {
             'Content-Type': 'application/json', // Indicar que se envía/recibe JSON
+            'User-Email': user,
           },
           body: JSON.stringify({}), // Si necesitas enviar datos en el cuerpo, agrégalos aquí
         });
