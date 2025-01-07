@@ -36,45 +36,41 @@
     }
 
     #save-button-container {
-      margin-top: 20px;
-      align-items: center;
-      gap: 10px;
+      position: relative;
+      display: inline-block;
     }
-
+    
     #save-button {
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
-      width:330px;
-      margin-left: 30px;
     }
-
-    #save-button:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
-
-    #save-button:hover:enabled {
-      background-color: #0056b3;
-    }
-
+    
     .loading-icon {
-      display: none;
-      width: 25px;
-      height: 25px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #4caf50;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #ccc;
+      border-top: 3px solid #333;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-
+    
+    .hidden {
+      display: none;
+    }
+    
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     #progress {
@@ -149,8 +145,8 @@
     <h3>Java Spring Boot | Excercise 1: //FIXME Use the string template to say "Hello, %name%" </h3>
     <textarea id="code-editor"></textarea>
     <div id="save-button-container">
-      <button id="save-button">Save Code</button>
-      <div class="loading-icon" id="loadingIcon"></div>
+      <button id="save-button" class="active">Save Code</button>
+      <div class="loading-icon hidden" id="loadingIcon"></div>
     </div>
     <div id="result"></div>
   </div>
@@ -221,9 +217,16 @@
     window.onload = loadMarkdownFiles;
 
     const user = "jaalza@gmail.com";
+
+    const saveButton = document.getElementById('save-button');
+    const loadingIcon = document.getElementById('loadingIcon');
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
+      // Cambiar a estado de carga
+      saveButton.classList.add('hidden'); // Oculta el botón
+      loadingIcon.classList.remove('hidden'); // Muestra el ícono de carga
+      
       const code = editor.getValue().trim(); // Código actual del editor
       //const code = editor.getValue().trim().replace(/\r\n/g, '\n'); // Normaliza saltos de línea
       //const code = btoa(editor.getValue().trim().replace(/\r\n/g, '\n')); // Codifica el código en Base64
@@ -298,6 +301,9 @@
         intervalId = null;
         isFetching = false;
         console.log('Consultas detenidas.');
+        // Restaurar el botón original
+        loadingIcon.classList.add('hidden'); // Oculta el ícono de carga
+        saveButton.classList.remove('hidden'); // Muestra el botón
       }
     }
     
