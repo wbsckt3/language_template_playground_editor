@@ -228,6 +228,7 @@
       const codeBase64 = btoa(code);
       const templateName = "spring_boot"; // Nombre del template
       const exerciseNumber = "exercise1"; // Número del ejercicio
+      const user = "jaalza@gmail.com";
       const saveButton = document.getElementById('save-button');
       const loadingIcon = document.getElementById('loadingIcon');
     
@@ -250,7 +251,8 @@
           body: JSON.stringify({
              codeBase64,         
              templateName, 
-             exerciseNumber, 
+             exerciseNumber,
+             user
           }),
         });
     
