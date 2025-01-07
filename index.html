@@ -167,7 +167,6 @@
 
     // (2) Función para GET de archivos Markdown y llenar el editor
     async function loadMarkdownFiles() {
-      const loadingIcon = document.getElementById('loadingIcon');
   
       try {
         // Definir el template y el ejercicio a buscar
@@ -220,7 +219,7 @@
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
-         let saveButton = document.getElementById('save-button');
+        let saveButton = document.getElementById('save-button');
         let loadingIcon = document.getElementById('loadingIcon');
       
         // Cambiar a estado de carga
