@@ -292,10 +292,6 @@
         intervalId = null;
         isFetching = false;
         console.log('Consultas detenidas.');
-        // Restaurar el botón original
-        // Rehabilitar el botón y ocultar el ícono de carga
-        saveButton.disabled = false;
-        loadingIcon.style.display = 'none';
       }
     }
     
@@ -332,6 +328,15 @@
         if (hasCompletedStatus) {
           console.log('Estado "completed" encontrado. Deteniendo consultas.');
           stopFetching();
+          // Restaurar el botón original
+          // Rehabilitar el botón y ocultar el ícono de carga
+          saveButton.disabled = false;
+          loadingIcon.style.display = 'none';
+        } else {
+          // Restaurar el botón original
+          // Rehabilitar el botón y ocultar el ícono de carga
+          saveButton.disabled = false;
+          loadingIcon.style.display = 'none';
         }
       } catch (error) {
         console.error('Error al obtener TestMsg:', error);
