@@ -36,10 +36,8 @@
     }
 
     #save-button-container {
-     /* position: relative;
-      display: inline-block; */
-        display: flex; /* Si quieres alinear botón e icono */
-      align-items: center;
+      position: relative;
+      display: inline-block;
     }
     
     #save-button {
@@ -146,17 +144,11 @@
     z-index: 2; /* Texto encima del progreso */
   }
 
-  #container {
-    display: flex; /* Usar Flexbox */
-    align-items: center; /* Alinear verticalmente los elementos */
-    gap: 10px; /* Espaciado entre los elementos */
-  }  
-
-  #result {
-    border: 1px solid #ccc; /* Estilo de prueba */
-    padding: 5px;
-    min-width: 200px; /* Ancho mínimo */
-  }  
+    #result {
+  display: inline-block; /* Coloca los divs en línea */
+  vertical-align: middle; /* Alinea verticalmente */
+  margin: 5px; /* Espaciado */
+}
 
   </style>
 </head>
@@ -164,13 +156,11 @@
   <div id="editor-container">
     <h3>Java Spring Boot | Excercise 1: //FIXME Use the string template to say "Hello, %name%" </h3>
     <textarea id="code-editor"></textarea>
-    <div id="container">
       <div id="save-button-container">
         <button id="save-button" class="active">Test Code</button>
         <div class="loading-icon hidden" id="loadingIcon"></div>
       </div>
       <div id="result"></div>
-    </div>
   </div>
 
  <script>
@@ -237,7 +227,7 @@
     // Ejecutar la función al cargar la página
     window.onload = loadMarkdownFiles;
 
-    const user = "jaalza@gmail.com";
+    const user = Date.now();
 
     const saveButton = document.getElementById('save-button');
     const loadingIcon = document.getElementById('loadingIcon');
