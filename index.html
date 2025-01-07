@@ -217,15 +217,16 @@
     window.onload = loadMarkdownFiles;
 
     const user = "jaalza@gmail.com";
-
-    const saveButton = document.getElementById('save-button');
-    const loadingIcon = document.getElementById('loadingIcon');
    
     // (3) método para envío del codigo 
     document.getElementById('save-button').addEventListener('click', async () => {
-      // Cambiar a estado de carga
-      saveButton.classList.add('hidden'); // Oculta el botón
-      loadingIcon.classList.remove('hidden'); // Muestra el ícono de carga
+         let saveButton = document.getElementById('save-button');
+        let loadingIcon = document.getElementById('loadingIcon');
+      
+        // Cambiar a estado de carga
+        saveButton.classList.add('hidden'); // Oculta el botón
+        loadingIcon.classList.remove('hidden'); // Muestra el ícono de carga
+
       
       const code = editor.getValue().trim(); // Código actual del editor
       //const code = editor.getValue().trim().replace(/\r\n/g, '\n'); // Normaliza saltos de línea
