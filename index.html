@@ -264,9 +264,7 @@
         console.error('Error al guardar el código:', error);
         alert('Hubo un error al guardar el código.');
       } finally {
-        // Rehabilitar el botón y ocultar el ícono de carga
-        saveButton.disabled = false;
-        loadingIcon.style.display = 'none';
+
       }
     });
 
@@ -294,8 +292,9 @@
         isFetching = false;
         console.log('Consultas detenidas.');
         // Restaurar el botón original
-        loadingIcon.classList.add('hidden'); // Oculta el ícono de carga
-        saveButton.classList.remove('hidden'); // Muestra el botón
+        // Rehabilitar el botón y ocultar el ícono de carga
+        saveButton.disabled = false;
+        loadingIcon.style.display = 'none';
       }
     }
     
