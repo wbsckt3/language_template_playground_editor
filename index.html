@@ -277,6 +277,7 @@
 
     let intervalId = null; // Almacenar el ID del intervalo
     let isFetching = false; // Bandera para controlar si las consultas están activas
+    let fetchingTimeout = 180000; // Timeout para esperar que el workflow se ejecute (3 minutos en milisegundos)
     
     // Función para iniciar el proceso de consulta
     function startFetching() {
@@ -284,7 +285,10 @@
       isFetching = true;
       console.log('Consultas iniciadas...');
       
-      intervalId = setInterval(fetchTestMessages, 10000); // Cada 10 segundos
+      // Agregar un tiempo de espera antes de que comience el primer fetch
+      setTimeout(() => {
+        intervalId = setInterval(fetchTestMessages, 10000); // Cada 10 segundos
+      }, 10000); // Esperar 10 segundos antes de comenzar la primera consulta
     }
     
     // Función para detener el proceso de consulta
@@ -313,6 +317,7 @@
     
         const data = await response.json(); // Analizar la respuesta como JSON
         console.log('Mensaje del test recibido:', data);
+    
         // Procesar el mensaje
         const messages = data.messages; // El string recibido
         const lines = messages.split('\n'); // Dividir en líneas
@@ -332,8 +337,10 @@
         }
       } catch (error) {
         console.error('Error al obtener TestMsg:', error);
+        // En caso de error, seguir intentando
       }
     }
+
 
     
   </script>
