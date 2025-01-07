@@ -256,7 +256,6 @@
         const data = await response.json();
     
         if (data.success) {
-          alert('El código se ha guardado correctamente en el repositorio.');
           startFetching(); // Iniciar el proceso de consulta
         } else {
           alert('Hubo un error al guardar el código.');
