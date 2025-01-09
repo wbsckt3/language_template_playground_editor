@@ -257,7 +257,8 @@
   
         if (data.success && data.files && data.files.length > 0) {
           // Concatenar contenido de los archivos
-          const combinedContent = data.files.map(file => `// ${file.name}\n${file.content}`).join('\n\n');
+          //const combinedContent = data.files.map(file => `// ${file.name}\n${file.content}`).join('\n\n');
+	  const combinedContent = data.files.map(file => file.content).join('\n\n');
           editor.setValue(combinedContent);
         } else {
           alert('No se encontraron archivos Markdown o hubo un problema con la respuesta.');
