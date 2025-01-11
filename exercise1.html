@@ -231,15 +231,15 @@
   
     editor.setValue(initialJavaCode);
 
+    const templateName = "spring_boot";
+    const exerciseNumber = "exercise1";
+    const exerciseFile1  = "GreetingControllerModel.txt";
+    const exercisefile2  = "GreetingModel.txt"; 	
+
     // (2) Función para GET de archivos Markdown y llenar el editor
     async function loadMarkdownFiles() {
   
       try {
-        // Definir el template y el ejercicio a buscar
-        const templateName   = "spring_boot"; 
-        const exerciseNumber = "exercise1";
-	const exerciseFile1  = "GreetingControllerModel.txt";
-	const exercisefile2  = "GreetingModel.txt";    
         
         // Realizar POST para obtener los archivos Markdown
         const response = await fetch('https://www.refactorii.com/get-markdown-files', {
@@ -297,11 +297,7 @@
       const code = editor.getValue().trim(); // Código actual del editor
       //const code = editor.getValue().trim().replace(/\r\n/g, '\n'); // Normaliza saltos de línea
       //const code = btoa(editor.getValue().trim().replace(/\r\n/g, '\n')); // Codifica el código en Base64
-      const codeBase64 = btoa(code);
-      const templateName = "spring_boot";
-      const exerciseNumber = "exercise1";
-      const exerciseFile1  = "GreetingControllerModel.txt";
-      const exercisefile2  = "GreetingModel.txt"; 	    
+      const codeBase64 = btoa(code);    
     
       if (!code) {
         alert('El código está vacío. Escribe algo antes de guardar.');
