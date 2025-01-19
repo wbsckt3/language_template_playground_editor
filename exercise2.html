@@ -183,7 +183,9 @@
 
  <script>
 
-    loadMarkdownFiles(); 
+    // Ejecutar la función al cargar la página
+    window.onload = loadMarkdownFiles;
+	 
     // Obtener el parámetro `token` de la URL
     /*const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -284,9 +286,6 @@
         }
       }
     }
-  
-    // Ejecutar la función al cargar la página
-    // window.onload = loadMarkdownFiles;
 
     const user = Date.now();
 
