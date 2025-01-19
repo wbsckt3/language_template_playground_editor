@@ -163,10 +163,40 @@
       color: #000;
       direction: ltr;
     }
+    
+    /* Estilos del header */
+    .header {
+      background-color: #f9f9f9;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center
+    }
+
+    .header span {
+      color: #007BFF; /* Azul como el que mostraste */
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .header span:hover {
+      color: #0056b3;
+    }
+
 
   </style>
 </head>
 <body>
+
+  <!-- Header -->
+  <div class="header">
+    <span>Refactorii</span>
+    <span>Courses</span>
+  </div>
+	
   <div id="editor-container">
     <p style="margin-top: -6px; font-weight: bold"> Refactorii Java Spring Boot | Excercise 2</p>  
     <p>
