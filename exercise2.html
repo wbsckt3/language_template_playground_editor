@@ -455,7 +455,13 @@
 async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
 	    const email = formData ? formData.Email : null;
-            const recipeId = localStorage.getItem('recipeId'); // Recuperar recipeId de local storage
+            // Obtener el `recipeId` (ahora llamado _id) directamente de la URL
+	    const urlParams = new URLSearchParams(window.location.search);
+	    const recipeId = urlParams.get('_id'); // Extraemos el _id de la URL
+	    if (!recipeId) {
+	        console.error('No _id (recipeId) found in the URL');
+	        return;
+	    }
 	    // Crear el objeto que se guardará en la base de datos
 	    // Obtener la URL actual
 	    const currentUrl = window.location.href;
