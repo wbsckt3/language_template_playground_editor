@@ -209,7 +209,7 @@
       <div id="result"></div>
   </div>
 
-   <button id="send-response-button" onClick= "guardarResultados()">Send response</button>
+  <button id="send-response-button" onClick="guardarResultados()" style="display: none;">Send response</button>
 	
  <script>
 
@@ -437,6 +437,7 @@
           // Rehabilitar el botón y ocultar el ícono de carga
           saveButton.disabled = false;
           loadingIcon.style.display = 'none';
+	  document.getElementById('send-response-button').style.display = 'block';
         } else {
           // Restaurar el botón original
           // Rehabilitar el botón y ocultar el ícono de carga
