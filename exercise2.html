@@ -432,12 +432,13 @@
         // Detener las consultas si el estado es "completed"
         if (hasCompletedStatus) {
           console.log('Estado "completed" encontrado. Deteniendo consultas.');
-          stopFetching();
-          // Restaurar el botón original
-          // Rehabilitar el botón y ocultar el ícono de carga
           saveButton.disabled = false;
           loadingIcon.style.display = 'none';
 	  document.getElementById('send-response-button').style.display = 'block';
+          stopFetching();
+          // Restaurar el botón original
+          // Rehabilitar el botón y ocultar el ícono de carga
+         
         } else {
           // Restaurar el botón original
           // Rehabilitar el botón y ocultar el ícono de carga
