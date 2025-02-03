@@ -209,7 +209,12 @@
       <div id="result"></div>
   </div>
 
-  <button id="send-response-button" onClick="guardarResultados()" style="display: none;">Send response</button>
+  <!-- Modal -->
+  <div id="modal-container" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);">
+      <p>✅ Las pruebas han sido completadas exitosamente.</p>
+      <button id="send-response-button" onClick="guardarResultados()">Send response</button>
+      <button onClick="cerrarModal()">Cerrar</button>
+  </div>
 	
  <script>
 
@@ -431,14 +436,23 @@
     
         // Detener las consultas si el estado es "completed"
         if (hasCompletedStatus) {
-          console.log('Estado "completed" encontrado. Deteniendo consultas.');
-          saveButton.disabled = false;
-          loadingIcon.style.display = 'none';
-	  document.getElementById('send-response-button').style.setProperty('display', 'block', 'important');
-          stopFetching();
-          // Restaurar el botón original
-          // Rehabilitar el botón y ocultar el ícono de carga
-         
+            // Verificar si ya existe para evitar duplicados
+		/*
+                console.log('Estado "completed" encontrado. Deteniendo consultas.');
+          	saveButton.disabled = false;
+          	loadingIcon.style.display = 'none';
+	  	document.getElementById('send-response-button').style.setProperty('display', 'block', 'important');
+          	stopFetching();
+                */
+	    if (!document.getElementById('send-response-button')) {
+	        const button = document.createElement('button');
+	        button.id = 'send-response-button';
+	        button.innerText = 'Send response';
+	        button.onclick = guardarResultados;
+	        // Agregarlo al cuerpo o a un contenedor específico
+	        document.body.appendChild(button);
+	    }
+    	    stopFetching(); // Detener las consultas
         } else {
           // Restaurar el botón original
           // Rehabilitar el botón y ocultar el ícono de carga
@@ -496,6 +510,13 @@ async function guardarResultados() {
 	    }
     }   
 
+    function mostrarModal() {
+    	document.getElementById('modal-container').style.display = 'block';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modal-container').style.display = 'none';
+    }
 
     
   </script>
