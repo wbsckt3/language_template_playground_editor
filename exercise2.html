@@ -470,29 +470,34 @@ async function fetchTestMessages() {
             body: JSON.stringify({})
         });
 
-        if (!response.ok) throw new Error('Failed to fetch TestMsg');
+        const data = await response.json();
+	console.log('Mensaje del test recibido:', data);
+	
+	// Procesar el mensaje recibido
+	const messages = data.messages || ""; // Asegurar que no sea undefined
+	console.log('Mensajes recibidos:', messages);
+	
+	// Determinar el estado de la prueba
+	const hasCompletedStatus = messages.includes("✅ Prueba Exitosa") || messages.includes("❌ Prueba Fallida");
+	
+	// Actualizar la UI con el resultado
+	document.getElementById('loadingIcon').style.display = 'none';
+	
+	if (messages.includes("✅ Prueba Exitosa")) {
+	    console.log('✅ Prueba exitosa. Mostrando modal de éxito.');
+	    document.getElementById('exito-message').innerText = messages;
+	    mostrarModalExito();
+	} else if (messages.includes("❌ Prueba Fallida")) {
+	    console.log('❌ Prueba fallida. Mostrando modal de error.');
+	    document.getElementById('error-message').innerText = messages;
+	    mostrarModalError();
+	} 
+	
+	// Detener el polling si ya tenemos un resultado
+	if (hasCompletedStatus) {
+	    stopFetching();
+	}
 
-        const data = await response.json(); // Convertir respuesta en JSON
-        console.log('Mensaje del test recibido:', data);
-
-        // Determinar el estado de la prueba
-        const hasCompletedStatus = data.includes("✅ Prueba Exitosa");
-        const hasFailedStatus = data.includes("❌ Prueba Fallida");
-
-        // Actualizar la UI con el resultado
-        //document.getElementById('result').innerText = JSON.stringify(data, null, 2);
-        document.getElementById('loadingIcon').style.display = 'none';
-        if (hasCompletedStatus) {
-            console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
-	    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
-            mostrarModalExito();
-        } else if (hasFailedStatus) {
-            console.log('Estado "fallido" encontrado. Mostrando modal de error.');
-            document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
-            mostrarModalError();
-        } else {
-            console.log('Estado desconocido, esperando...');
-        }
 
     } catch (error) {
         console.error('Error al obtener TestMsg:', error);
