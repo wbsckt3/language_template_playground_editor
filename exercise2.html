@@ -463,7 +463,6 @@
         if (hasCompletedStatus) {
             console.log('✅ Prueba exitosa. Mostrando modal.');
             document.getElementById('loadingIcon').style.display = 'none';
-            document.getElementById('send-response-button').style.display = 'block';
 	    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
             mostrarModalExito();
             stopFetching(); // Detener consultas solo cuando es exitoso
