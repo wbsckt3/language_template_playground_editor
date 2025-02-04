@@ -226,11 +226,11 @@
 	
  <script>
 
-    // Ejecutar la función al cargar la página
-    window.onload = loadMarkdownFiles;
+    // Ejecutar la función al cargar la página cuando se comenta token
+    // window.onload = loadMarkdownFiles;
 	 
     // Obtener el parámetro `token` de la URL
-    /*const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
 	    
@@ -263,7 +263,7 @@
 	    
   } else {
      document.body.innerHTML = 'Access denied. No token provided.';
-  } */
+  } 
 
    
   // (1) codemirror editor initial code
