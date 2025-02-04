@@ -390,7 +390,8 @@
     let intervalId = null; // Almacenar el ID del intervalo
     let isFetching = false; // Bandera para controlar si las consultas están activas
     let fetchingTimeout = 6000; // Timeout para esperar que el workflow se ejecute (3 minutos en milisegundos)
-    
+
+    let pollingInterval;
     // Función para iniciar el proceso de consulta
     function startFetching() {
       if (isFetching) return; // Evitar múltiples inicios
@@ -398,13 +399,13 @@
       console.log('Consultas iniciadas...');
       
       // Llamar a la función cuando inicie el proceso
-      fetchTestMessagesWithRetry();
+       pollingInterval = setInterval(fetchTestMessages, 5000); // Consultar cada 5 segundos
     }
     
     // Función para detener el proceso de consulta
     function stopFetching() {
       if (intervalId) {
-        clearInterval(intervalId); // Detener el intervalo
+        clearInterval(pollingInterval);
         intervalId = null;
         isFetching = false;
         console.log('Consultas detenidas.');
@@ -458,63 +459,42 @@
     }
 } */
 
-;
+async function fetchTestMessages() {
+    try {
+        const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Email': user,
+            },
+            body: JSON.stringify({})
+        });
 
-// Función para obtener el mensaje de respuesta con reintentos dinámicos
-async function fetchTestMessagesWithRetry(maxRetries = 10, delay = 5000) {
-    if (isFetching) return; // Evitar múltiples inicios
-    isFetching = true;
-    console.log('📡 Iniciando consulta de resultados...');
+        if (!response.ok) throw new Error('Failed to fetch TestMsg');
 
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        try {
-            const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'User-Email': user,
-                },
-                body: JSON.stringify({}),
-            });
+        const data = await response.json(); // Convertir respuesta en JSON
+        console.log('Mensaje del test recibido:', data);
 
-            if (!response.ok) throw new Error('❌ Error en la petición al backend');
+        const messages = data.messages || ""; // Asegurar que hay mensajes
+        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
 
-            const data = await response.json();
-            const messages = data.messages || ""; // Asegurar que no sea undefined
-            console.log(`📩 Intento ${attempt}: Mensajes recibidos ->`, messages);
+        // Buscar si alguna línea contiene `Status: completed`
+        const hasCompletedStatus = messages.includes('Status: completed');
+        console.log('¿Completado?:', hasCompletedStatus);
 
-            // Determinar el estado de la prueba
-            const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
-            const hasFailedStatus = messages.includes("❌ Prueba Fallida");
-
-            document.getElementById('loadingIcon').style.display = 'none';
-
-            if (hasCompletedStatus) {
-                console.log('✅ Prueba exitosa. Mostrando modal.');
-                document.getElementById('exito-message').innerText = messages;
-                mostrarModalExito();
-                return; // Salir de la función si el resultado es exitoso
-            } else if (hasFailedStatus) {
-                console.log('❌ Prueba fallida. Mostrando modal.');
-                document.getElementById('error-message').innerText = messages;
-                mostrarModalError();
-                return; // Salir de la función si la prueba falló
-            } else {
-                console.log(`⌛ Resultado aún no listo. Reintentando en ${delay / 1000} segundos...`);
-            }
-        } catch (error) {
-            console.error(`⚠️ Error en intento ${attempt}:`, error);
+        if (hasCompletedStatus) {
+            console.log('✅ Pruebas completadas. Mostrando el botón.');
+            mostrarBoton();
+            stopFetching(); // Detener el polling
         }
 
-        // Esperar antes del siguiente intento
-        await new Promise(resolve => setTimeout(resolve, delay));
+    } catch (error) {
+        console.error('Error al obtener TestMsg:', error);
     }
-
-    console.log('⏳ Se agotaron los intentos sin obtener resultado.');
-    document.getElementById('loadingIcon').style.display = 'none';
-    document.getElementById('error-message').innerText = "⚠️ Tiempo de espera agotado. Intenta nuevamente.";
-    mostrarModalError();
 }
+
+
+
 	 
 async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
