@@ -448,6 +448,7 @@
             console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
 	    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
             mostrarModalExito();
+	    stopFetching(); // Detener consultas una vez que pasó
         } else if (hasFailedStatus) {
             console.log('Estado "fallido" encontrado. Mostrando modal de error.');
             document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
