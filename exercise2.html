@@ -438,8 +438,8 @@
 	let hasFailedStatus = false;
 	    
         // Determinar el estado de la prueba
-        const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
-        const hasFailedStatus = messages.includes("❌ Prueba Fallida");
+        hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
+        hasFailedStatus = messages.includes("❌ Prueba Fallida");
 
         // Actualizar la UI con el resultado
         //document.getElementById('result').innerText = JSON.stringify(data, null, 2);
