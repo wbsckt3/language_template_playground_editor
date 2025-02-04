@@ -415,60 +415,49 @@
     
     // (4) Obtener el mensaje de respuesta de los test
     async function fetchTestMessages() {
-      try {
+    try {
         const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
-          method: 'POST', // Cambiado a POST
-          headers: {
-            'Content-Type': 'application/json', // Indicar que se envía/recibe JSON
-            'User-Email': user,
-          },
-          body: JSON.stringify({}), // Si necesitas enviar datos en el cuerpo, agrégalos aquí
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Email': user,
+            },
+            body: JSON.stringify({}),
         });
-    
+
         if (!response.ok) throw new Error('Failed to fetch TestMsg');
-    
-        const data = await response.json(); // Analizar la respuesta como JSON
+
+        const data = await response.json();
         console.log('Mensaje del test recibido:', data);
-    
-        // Procesar el mensaje
-        const messages = data.messages; // El string recibido
-        const lines = messages.split('\n'); // Dividir en líneas
-    
-        // Buscar si alguna línea contiene `Status: completed`
-        const hasCompletedStatus = lines.some(line => line.includes('Status: completed'));
-    
-        console.log('Mensaje recibido:', data);
-    
-        // Actualizar la UI con los datos
+
+        // Procesar el mensaje recibido
+        const messages = data.messages || ""; // Asegurar que no sea undefined
+        console.log('Mensajes recibidos:', messages);
+
+        // Determinar el estado de la prueba
+        const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
+        const hasFailedStatus = messages.includes("❌ Prueba Fallida");
+
+        // Actualizar la UI con el resultado
         document.getElementById('result').innerText = JSON.stringify(data, null, 2);
-    
-        // Detener las consultas si el estado es "completed"
+
         if (hasCompletedStatus) {
-            // Verificar si ya existe para evitar duplicados
-		/*
-                console.log('Estado "completed" encontrado. Deteniendo consultas.');
-          	saveButton.disabled = false;
-          	loadingIcon.style.display = 'none';
-	  	document.getElementById('send-response-button').style.setProperty('display', 'block', 'important');
-          	stopFetching();
-                */
-	     mostrarModal(); // En lugar de modificar el botón directamente
-             stopFetching(); // Detener las consultas
-		
+            console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
+            mostrarModal('modal-exito');
+        } else if (hasFailedStatus) {
+            console.log('Estado "fallido" encontrado. Mostrando modal de error.');
+            document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
+            mostrarModal('modal-error');
         } else {
-          // Restaurar el botón original
-          // Rehabilitar el botón y ocultar el ícono de carga
-          saveButton.disabled = false;
-          loadingIcon.style.display = 'none';
-	  // Mostrar el mensaje de error en el modal
-          document.getElementById('error-message').innerText = messages;
-          mostrarModal('modal-error');	
+            console.log('Estado desconocido, esperando...');
         }
-      } catch (error) {
+
+        stopFetching(); // Detener las consultas después de obtener la respuesta
+
+    } catch (error) {
         console.error('Error al obtener TestMsg:', error);
-        // En caso de error, seguir intentando
-      }
     }
+}
 
         
 
