@@ -475,17 +475,23 @@ async function fetchTestMessages() {
         const data = await response.json(); // Convertir respuesta en JSON
         console.log('Mensaje del test recibido:', data);
 
-        const messages = data.messages || ""; // Asegurar que hay mensajes
-        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+        // Determinar el estado de la prueba
+        const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
+        const hasFailedStatus = messages.includes("❌ Prueba Fallida");
 
-        // Buscar si alguna línea contiene `Status: completed`
-        const hasCompletedStatus = messages.includes('Status: completed');
-        console.log('¿Completado?:', hasCompletedStatus);
-
+        // Actualizar la UI con el resultado
+        //document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+        document.getElementById('loadingIcon').style.display = 'none';
         if (hasCompletedStatus) {
-            console.log('✅ Pruebas completadas. Mostrando el botón.');
-            mostrarBoton();
-            stopFetching(); // Detener el polling
+            console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
+	    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
+            mostrarModalExito();
+        } else if (hasFailedStatus) {
+            console.log('Estado "fallido" encontrado. Mostrando modal de error.');
+            document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
+            mostrarModalError();
+        } else {
+            console.log('Estado desconocido, esperando...');
         }
 
     } catch (error) {
