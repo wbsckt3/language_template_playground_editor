@@ -476,8 +476,8 @@ async function fetchTestMessages() {
         console.log('Mensaje del test recibido:', data);
 
         // Determinar el estado de la prueba
-        const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
-        const hasFailedStatus = messages.includes("❌ Prueba Fallida");
+        const hasCompletedStatus = data.includes("✅ Prueba Exitosa");
+        const hasFailedStatus = data.includes("❌ Prueba Fallida");
 
         // Actualizar la UI con el resultado
         //document.getElementById('result').innerText = JSON.stringify(data, null, 2);
