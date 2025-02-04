@@ -434,6 +434,9 @@
         const messages = data.messages || ""; // Asegurar que no sea undefined
         console.log('Mensajes recibidos:', messages);
 
+        let hasCompletedStatus = false;
+	let hasFailedStatus = false;
+	    
         // Determinar el estado de la prueba
         const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
         const hasFailedStatus = messages.includes("❌ Prueba Fallida");
