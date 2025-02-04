@@ -210,17 +210,17 @@
   </div>
 
   <!-- Modal -->
-  <div id="modal-container" style="background: #f9f6cd; display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);">
+  <div id="modal-exito" style="background: #f9f6cd; display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);">
       <p>✅ Ok! Las pruebas han sido completadas exitosamente.</p>
       <button id="send-response-button" onClick="guardarResultados()">Guardar progreso</button>
-      <button onClick="cerrarModal()">Cerrar</button>
+      <button onClick="cerrarModalExito ()">Cerrar</button>
   </div>
 
   <!-- Modal de Error -->
   <div id="modal-error" style="background: #ffe1e1; display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffebee; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,0,0,0.3);">
       <p>❌ La prueba ha fallado.</p>
       <p id="error-message"></p>
-      <button onClick="cerrarModal('modal-error')">Cerrar</button>
+      <button onClick="cerrarModalError()">Cerrar</button>
   </div>
 
 	
@@ -443,11 +443,11 @@
 
         if (hasCompletedStatus) {
             console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
-            mostrarModal('modal-exito');
+            mostrarModalExito();
         } else if (hasFailedStatus) {
             console.log('Estado "fallido" encontrado. Mostrando modal de error.');
             document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
-            mostrarModal('modal-error');
+            mostrarModalError();
         } else {
             console.log('Estado desconocido, esperando...');
         }
@@ -504,14 +504,18 @@ async function guardarResultados() {
 	    }
     }   
 
-    function mostrarModal() {
-    	document.getElementById('modal-container').style.display = 'block';
+    function mostrarModalExito() {
+    	document.getElementById('modal-exito').style.display = 'block';
     }
-
-    function cerrarModal() {
-        document.getElementById('modal-container').style.display = 'none';
+    function cerrarModalExito() {
+        document.getElementById('modal-exito').style.display = 'none';
     }
-
+    function mostrarModalError() {
+    	document.getElementById('modal-error').style.display = 'block';
+    }
+    function cerrarModalError() {
+        document.getElementById('modal-error').style.display = 'none';
+    }
     
   </script>
 
