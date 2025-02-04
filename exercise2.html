@@ -387,84 +387,85 @@
       }
     });
 
-    let isFetching = false;
-    let intervalId;
+	 
+let isFetching = false;
 
 function startFetching() {
     if (isFetching) return; // Evitar múltiples inicios
     isFetching = true;
     console.log('Consultas iniciadas...');
-    
-    // Iniciar la primera consulta inmediatamente (sin esperar)
-    fetchTestMessages(); // Llamar a la función para obtener resultados inmediatamente
 
-    // Luego comenzar el intervalo si se desea continuar consultando
-    intervalId = setInterval(fetchTestMessages, 5000); // Consultas cada 5 segundos
-}
-
-// Función para detener las consultas
-function stopFetching() {
-    if (intervalId) {
-        clearInterval(intervalId); // Detener las consultas periódicas
-        intervalId = null;
-        console.log('Consultas detenidas.');
-    }
-    isFetching = false; // Reiniciar el estado de la variable isFetching
-}
-    
-    // (4) Obtener el mensaje de respuesta de los test
-
-isFetching = false;  // Evitar consultas múltiples
-let timeoutFlag = false;  // Para detectar si hubo timeout
-
-// (4) Obtener el mensaje de respuesta de los test
-    async function fetchTestMessages() {
-    try {
-        const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Email': user,
-            },
-            body: JSON.stringify({}),
+    // Llamar a la función para obtener los resultados de manera controlada
+    fetchTestMessages()
+        .then(() => {
+            // Una vez que obtengas un resultado, puedes decidir si hacer otra consulta o no.
+            console.log("Consulta exitosa, ¿realizar otra consulta?");
+            // Si deseas continuar consultando, puedes llamar nuevamente a la función.
+            // startFetching();  // Descomenta esta línea si deseas continuar con consultas automáticas.
+        })
+        .catch((error) => {
+            console.error('Error en la consulta:', error);
+            stopFetching(); // Detener las consultas si ocurre un error
         });
-
-        if (!response.ok) throw new Error('Failed to fetch TestMsg');
-
-        const data = await response.json();
-        console.log('Mensaje del test recibido:', data);
-
-        // Procesar el mensaje recibido
-        const messages = data.messages || ""; // Asegurar que no sea undefined
-        console.log('Mensajes recibidos:', messages);
-
-        // Determinar el estado de la prueba
-        const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
-        const hasFailedStatus = messages.includes("❌ Prueba Fallida");
-
-        // Actualizar la UI con el resultado
-        //document.getElementById('result').innerText = JSON.stringify(data, null, 2);
-        document.getElementById('loadingIcon').style.display = 'none';
-        if (hasCompletedStatus) {
-            console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
-	    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
-            mostrarModalExito();
-        } else if (hasFailedStatus) {
-            console.log('Estado "fallido" encontrado. Mostrando modal de error.');
-            document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
-            mostrarModalError();
-        } else {
-            console.log('Estado desconocido, esperando...');
-        }
-
-        stopFetching(); // Detener las consultas después de obtener la respuesta
-
-    } catch (error) {
-        console.error('Error al obtener TestMsg:', error);
-    }
 }
 
+// Función para obtener el mensaje de respuesta de los test
+function fetchTestMessages() {
+    return new Promise((resolve, reject) => {
+        // Simula una llamada de red asíncrona (ejemplo con setTimeout para simular tiempo de espera)
+        setTimeout(async () => {
+            try {
+                const response = await fetch('https://www.refactorii.com/test-result-get-testMsg', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'User-Email': user,
+                    },
+                    body: JSON.stringify({}),
+                });
 
+                if (!response.ok) throw new Error('Failed to fetch TestMsg');
+                
+                const data = await response.json();
+                console.log('Mensaje del test recibido:', data);
+
+                // Procesar el mensaje recibido
+                const messages = data.messages || ""; // Asegurar que no sea undefined
+                console.log('Mensajes recibidos:', messages);
+
+                // Determinar el estado de la prueba
+                const hasCompletedStatus = messages.includes("✅ Prueba Exitosa");
+                const hasFailedStatus = messages.includes("❌ Prueba Fallida");
+
+                document.getElementById('loadingIcon').style.display = 'none';
+                if (hasCompletedStatus) {
+                    console.log('Estado "completed" encontrado. Mostrando modal de éxito.');
+                    document.getElementById('exito-message').innerText = messages; // Mostrar mensaje detallado
+                    mostrarModalExito();
+                    resolve(); // Resuelve la promesa
+                } else if (hasFailedStatus) {
+                    console.log('Estado "fallido" encontrado. Mostrando modal de error.');
+                    document.getElementById('error-message').innerText = messages; // Mostrar mensaje detallado
+                    mostrarModalError();
+                    reject('Prueba fallida'); // Rechaza la promesa en caso de fallo
+                } else {
+                    console.log('Estado desconocido, esperando...');
+                    reject('Estado desconocido'); // Rechaza la promesa si el estado no es ni exitoso ni fallido
+                }
+            } catch (error) {
+                console.error('Error al obtener TestMsg:', error);
+                reject('Error en la consulta');
+            }
+        }, 5000); // Simula el tiempo de espera de la consulta (puedes ajustarlo)
+    });
+}
+
+// Función para detener las consultas (opcional)
+function stopFetching() {
+    isFetching = false;
+    console.log('Consultas detenidas.');
+}
+	 
 async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
 	    const email = formData ? formData.Email : null;
