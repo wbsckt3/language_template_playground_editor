@@ -215,6 +215,14 @@
       <button id="send-response-button" onClick="guardarResultados()">Guardar progreso</button>
       <button onClick="cerrarModal()">Cerrar</button>
   </div>
+
+  <!-- Modal de Error -->
+  <div id="modal-error" style="background: #ffe1e1; display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffebee; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(255,0,0,0.3);">
+      <p>❌ La prueba ha fallado.</p>
+      <p id="error-message"></p>
+      <button onClick="cerrarModal('modal-error')">Cerrar</button>
+  </div>
+
 	
  <script>
 
@@ -452,6 +460,9 @@
           // Rehabilitar el botón y ocultar el ícono de carga
           saveButton.disabled = false;
           loadingIcon.style.display = 'none';
+	  // Mostrar el mensaje de error en el modal
+          document.getElementById('error-message').innerText = messages;
+          mostrarModal('modal-error');	
         }
       } catch (error) {
         console.error('Error al obtener TestMsg:', error);
