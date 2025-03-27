@@ -444,46 +444,49 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 	 
 async function guardarResultados() {
-	    const formData = JSON.parse(localStorage.getItem("formData"));
-	    const email = formData ? formData.Email : null;
-            // Obtener el `recipeId` (ahora llamado _id) directamente de la URL
-	    const urlParams = new URLSearchParams(window.location.search);
-	    const recipeId = urlParams.get('_id'); // Extraemos el _id de la URL
-	    if (!recipeId) {
-	        console.error('No _id (recipeId) found in the URL');
-	        return;
-	    }
-	    // Crear el objeto que se guardará en la base de datos
-	    // Obtener la URL actual
-	    const currentUrl = window.location.href;
-	    // Crear un objeto URL
-	    const url = new URL(currentUrl);
-	    // Eliminar el parámetro 'token' de la query string
-	    url.searchParams.delete('token');
-	    // Obtener el pathname sin el token
-            const urlWithoutToken = url.pathname.split('/').pop();
-	    const recipeCalificadaOk = {
-	        recipeId: recipeId,
-		url: urlWithoutToken,
-	        date: new Date().toISOString()
-	    };
-	    try {
-	        const response = await fetch('https://www.refactorii.com/updateOneGoogleSigninUserRecipe', {
-	            method: 'POST',
-	            headers: {
-	                'Content-Type': 'application/json'
-	            },
-	            //body: JSON.stringify({ Email: email, recipeCalificadaOk: recipeId })
-		    body: JSON.stringify({ Email: email, recipeCalificadaOk })	
-	        });
-	        const data = await response.json();
-	        console.log('Server responds:', "Ok");
-		// Redirección a la página original
-                window.location.href = `https://www.refactorii.com/recipes/${recipeId}`;
-	    } catch (error) {
-	        console.error('Error sending the results to the server:', error);
-	    }
-    }   
+  const formData = JSON.parse(localStorage.getItem("formData"));
+  const email = formData ? formData.Email : null;
+
+  // Obtener recipeId desde localStorage
+  const recipeId = localStorage.getItem("recipeId");
+  if (!recipeId) {
+    console.error("No recipeId found in localStorage");
+    return;
+  }
+
+  // Obtener la URL actual y quitar el token
+  const currentUrl = window.location.href;
+  const url = new URL(currentUrl);
+  url.searchParams.delete("token");
+  const urlWithoutToken = url.pathname.split("/").pop();
+
+  // Crear objeto para enviar al servidor
+  const recipeCalificadaOk = {
+    recipeId: recipeId,
+    url: urlWithoutToken,
+    date: new Date().toISOString(),
+  };
+
+  try {
+    const response = await fetch(
+      "https://www.refactorii.com/updateOneGoogleSigninUserRecipe",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Email: email, recipeCalificadaOk }),
+      }
+    );
+    const data = await response.json();
+    console.log("Server responds:", data);
+
+    // Redirigir a la receta
+    window.location.href = `https://www.refactorii.com/recipes/${recipeId}`;
+  } catch (error) {
+    console.error("Error sending the results to the server:", error);
+  }
+} 
 
     function mostrarModalExito() {
     	document.getElementById('modal-exito').style.display = 'block';
