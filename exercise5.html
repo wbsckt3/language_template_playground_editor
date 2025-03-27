@@ -467,6 +467,7 @@ async function guardarResultados() {
     urlCalificada: urlWithoutToken,
     date: new Date().toISOString(),
   };
+console.log(bodyToSend)
 alert(bodyToSend)
   try {
     const response = await fetch(
