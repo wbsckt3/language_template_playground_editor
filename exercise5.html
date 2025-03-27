@@ -449,6 +449,7 @@ async function guardarResultados() {
 
   // Obtener recipeId desde localStorage
   const recipeId = localStorage.getItem("recipeId");
+  const userEmail = localStorage.getItem("email");
   if (!recipeId) {
     console.error("No recipeId found in localStorage");
     return;
@@ -462,7 +463,7 @@ async function guardarResultados() {
 
   // Crear objeto para enviar al servidor
   const bodyToSend = {
-    Email: email,
+    Email: userEmail,
     recipeId: recipeId,
     urlCalificada: urlWithoutToken,
     date: new Date().toISOString(),
