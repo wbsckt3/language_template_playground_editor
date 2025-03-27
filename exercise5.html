@@ -461,9 +461,10 @@ async function guardarResultados() {
   const urlWithoutToken = url.pathname.split("/").pop();
 
   // Crear objeto para enviar al servidor
-  const recipeCalificadaOk = {
+  const bodyToSend = {
+    Email: email,
     recipeId: recipeId,
-    url: urlWithoutToken,
+    urlCalificada: urlWithoutToken,
     date: new Date().toISOString(),
   };
 
@@ -475,7 +476,7 @@ async function guardarResultados() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ Email: email, recipeCalificadaOk }),
+        body: JSON.stringify({ bodyToSend }),
       }
     );
     const data = await response.json();
