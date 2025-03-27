@@ -466,7 +466,7 @@ async function guardarResultados() {
     url: urlWithoutToken,
     date: new Date().toISOString(),
   };
-
+  console.log(recipeCalificadaOk)
   try {
     const response = await fetch(
       "https://www.refactorii.com/updateOneGoogleSigninUserRecipe",
