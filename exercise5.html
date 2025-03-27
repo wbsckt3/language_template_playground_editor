@@ -180,7 +180,7 @@
   <div id="modal-exito" style="width: 76%; top:37%; background: #e8fff1; display: none; position: fixed; left: 50%; transform: translate(-50%, -50%); padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);">
       <p>✅ Ok! Las pruebas han sido completadas exitosamente.</p>
       <p id="exito-message"></p>
-      <button id="send-response-button" style="background: #42e179; border: none; padding: 10px; color: #fff; font-weight: bold;">Guardar progreso</button>
+      <button id="send-response-button" onclick="guardarResultados()" style="background: #42e179; border: none; padding: 10px; color: #fff; font-weight: bold;">Guardar progreso</button>
       <button onClick="cerrarModalExito ()" style="border: none;  padding: 10px;">Cerrar</button>
   </div>
 
@@ -434,8 +434,6 @@
 		}
 
 	}
-
-document.getElementById('send-response-button').addEventListener('click', guardarResultados);
 	 
 async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
