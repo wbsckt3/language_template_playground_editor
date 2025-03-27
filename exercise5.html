@@ -212,9 +212,11 @@
 	             }).join(''));
                      const decodedToken = JSON.parse(jsonPayload);
          	     const recipeId = decodedToken._id; // Asegúrate de usar el nombre correcto del campo en el payload
+		     const email = decodedToken.email;
                      console.log('Recipe ID:', recipeId);
 		     // Almacenar recipeId en local storage
                      localStorage.setItem('recipeId', recipeId);
+		     localStorage.setItem('email', email);
 		     loadMarkdownFiles();
 	    	} else {
 	  	    console.log(data.valid);
@@ -444,8 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 	 
 async function guardarResultados() {
-  const formData = JSON.parse(localStorage.getItem("formData"));
-  const email = formData ? formData.Email : null;
+  const Email = JSON.parse(localStorage.getItem("email"));
 
   // Obtener recipeId desde localStorage
   const recipeId = localStorage.getItem("recipeId");
@@ -462,7 +463,7 @@ async function guardarResultados() {
 
   // Crear objeto para enviar al servidor
   const bodyToSend = {
-    Email: email,
+    Email: Email,
     recipeId: recipeId,
     urlCalificada: urlWithoutToken,
     date: new Date().toISOString(),
